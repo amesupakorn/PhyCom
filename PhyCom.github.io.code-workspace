@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../Downloads/css-grid-website-layout"
+		},
+		{
+			"path": "../../../Downloads/portfolio-layout"
+		},
+		{
+			"path": "../../../Downloads/navigation-pagedesign-lesson"
+		},
+		{
+			"path": "../../../Downloads/lazy-load-images"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "PhyCom.github.io"
+	}
+}
