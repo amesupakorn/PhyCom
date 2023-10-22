@@ -109,6 +109,22 @@ a {
   background: #ff0266;
   transition: left 0.3s ease;
 }
+@media (min-width: 200px) {
+  .nav h1,
+  .slider h1 {
+    font-size: 5vw;
+  }
+
+  .nav h4,
+  .slider h4 {
+    font-size: 2vw;
+  }
+
+  .nav-tab {
+    font-size: 1.8vw;
+  }
+}
+
 .background {
   position: absolute;
   height: 90vh;
@@ -235,7 +251,7 @@ a {
 .card {
 	display: inline-block;
 	width: 100%;
-	max-width: 16rem;
+	max-width: 18rem;
 	margin: 1rem;
 	font-size: 1rem;
 	text-decoration: none;
