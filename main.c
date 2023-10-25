@@ -14,6 +14,7 @@ int score = 0;
 char GameOn = TRUE;
 suseconds_t timer = 400000; // decrease this to make it faster
 int decrease = 1000;
+int selectShape = 0;
 
 typedef struct {
     char **array;
@@ -71,18 +72,6 @@ int CheckPosition(Shape shape){ //Check the position of the copied shape
 	return TRUE;
 }
 
-void SetNewRandomShape(){ //updates [current] with new shape
-	Shape new_shape = CopyShape(ShapesArray[rand()%7]);
-
-    new_shape.col = rand()%(COLS-new_shape.width+1);
-    new_shape.row = 0;
-    DeleteShape(current);
-	current = new_shape;
-	if(!CheckPosition(current)){
-		GameOn = FALSE;
-	}
-}
-
 void RotateShape(Shape shape){ //rotates clockwise
 	Shape temp = CopyShape(shape);
 	int i, j, k, width;
@@ -105,6 +94,31 @@ void RotateShape2(Shape shape){
         }
     }
 	DeleteShape(temp);
+}
+
+void SetNewRandomShape(){ //updates [current] with new shape
+	Shape new_shape = CopyShape(ShapesArray[selectShape]);
+
+    //สุ่มอีกทีตอนเกิด
+    int selSpawn = rand()%4;
+    if (selSpawn == 0){
+        RotateShape(new_shape);
+    }
+    else if(selSpawn == 1){
+        RotateShape2(new_shape);
+    }
+    else if(selSpawn == 2){
+        RotateShape(new_shape);
+        RotateShape(new_shape);
+    }
+
+    new_shape.col = rand()%(COLS-new_shape.width+1);
+    new_shape.row = 0;
+    DeleteShape(current);
+	current = new_shape;
+	if(!CheckPosition(current)){
+		GameOn = FALSE;
+	}
 }
 
 void WriteToTable(){
@@ -153,7 +167,7 @@ void PrintTable(){
 	printw("Covid Tetris\n");
 	for(i = 0; i < ROWS ;i++){
 		for(j = 0; j < COLS ; j++){
-			printw("%c ", (Table[i][j] + Buffer[i][j])? 'o': '.');
+			printw("%c ", (Table[i][j] + Buffer[i][j])? '#': '.');
 		}
 		printw("\n");
 	}
@@ -202,6 +216,30 @@ void ManipulateCurrent(int action){
             WriteToTable();
             RemoveFullRowsAndUpdateScore();
             SetNewRandomShape();
+            break;
+        case 'i':
+            selectShape = 0;
+            break;
+        case 'o':
+            selectShape = 1;
+            break;
+        case 'p':
+            selectShape = 2;
+            break;
+        case '[':
+            selectShape = 3;
+            break;
+        case ']':
+            selectShape = 4;
+            break;
+        case 'k':
+            selectShape = 5;
+            break;
+        case 'l':
+            selectShape = 6;
+            break;
+        case ';':
+            selectShape = 7;
             break;
 	}
 	DeleteShape(temp);
