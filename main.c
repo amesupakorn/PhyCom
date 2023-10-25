@@ -176,6 +176,17 @@ void ManipulateCurrent(int action){
 			if(CheckPosition(temp))
 				RotateShape(current);
 			break;
+	    case ' ': // Spacebar
+            while (CheckPosition(temp)) {
+                current.row++;
+                temp.row++;
+            }
+            current.row--;
+            WriteToTable();
+            RemoveFullRowsAndUpdateScore();
+            SetNewRandomShape();
+            break;
+
 	}
 	DeleteShape(temp);
 	PrintTable();
