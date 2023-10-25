@@ -95,6 +95,18 @@ void RotateShape(Shape shape){ //rotates clockwise
 	DeleteShape(temp);
 }
 
+void RotateShape2(Shape shape){
+    Shape temp = CopyShape(shape);
+    int i, j, k, width;
+    width = shape.width;
+    for (i = 0; i < width; i++) {
+        for(j = 0, k = width-1; j < width ; j++, k--){
+				shape.array[j][i] = temp.array[i][k];
+        }
+    }
+	DeleteShape(temp);
+}
+
 void WriteToTable(){
 	int i, j;
 	for(i = 0; i < current.width ;i++){
@@ -141,7 +153,7 @@ void PrintTable(){
 	printw("Covid Tetris\n");
 	for(i = 0; i < ROWS ;i++){
 		for(j = 0; j < COLS ; j++){
-			printw("%c ", (Table[i][j] + Buffer[i][j])? '#': '.');
+			printw("%c ", (Table[i][j] + Buffer[i][j])? 'o': '.');
 		}
 		printw("\n");
 	}
@@ -176,7 +188,12 @@ void ManipulateCurrent(int action){
 			if(CheckPosition(temp))
 				RotateShape(current);
 			break;
-	    case ' ': // Spacebar
+        case 'e':
+            RotateShape2(temp);
+            if(CheckPosition(temp))
+				RotateShape2(current);
+			break;
+        case ' ': // Spacebar
             while (CheckPosition(temp)) {
                 current.row++;
                 temp.row++;
@@ -186,7 +203,6 @@ void ManipulateCurrent(int action){
             RemoveFullRowsAndUpdateScore();
             SetNewRandomShape();
             break;
-
 	}
 	DeleteShape(temp);
 	PrintTable();
@@ -225,7 +241,7 @@ int main() {
 		}
 		printf("\n");
 	}
-	printf("\nGame ouvre!\n");
+	printf("\nGame over!\n");
 	printf("\nScore: %d\n", score);
     return 0;
 }
