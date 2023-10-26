@@ -333,3 +333,32 @@ h3{
   position: relative;
   top: 3.5%;
 }
+
+.descrip{
+  position: relative;
+  left: 20%;
+  text-align: left;
+  font-size: 18px;
+  line-height: 170%;
+}
+
+.descrip2{
+  position: relative;
+  left: 7%;
+  text-align: left;
+  font-size: 18px;
+  line-height: 170%;
+}
+
+.onep{
+  position: relative;
+  top: 10%;
+  left: -26%;
+
+}
+
+.twop{
+  position: relative;
+  top: -14.6%;
+  left: 24%;
+}
