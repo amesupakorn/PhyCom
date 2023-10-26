@@ -283,5 +283,53 @@ a {
 }
 
 .imgicon{
+  position: relative;
+  top: 10%;
+}
 
+.imgspace{
+  position: relative;
+  top: 10%;
+}
+
+.textabout{
+  position: relative;
+  text-align: center;
+  line-height: 200%;
+  font-size: 18px;
+  top: 1%;
+}
+.textabout2{
+  position: relative;
+  text-align: center;
+  line-height: 150%;
+  font-size: 18px;
+  top: 2%;
+}
+.textabout3{
+  position: relative;
+  text-align: center;
+  line-height: 200%;
+  font-size: 18px;
+  top: 5%;
+}
+.textabout4{
+  position: relative;
+  text-align: center;
+  line-height: 500%;
+  font-size: 18px;
+  top: 8%;
+}
+
+#tab-svelte{
+  height: 2000px;
+}
+
+h3{
+  font-size: 30px;
+}
+
+.obj{
+  position: relative;
+  top: 3.5%;
 }
