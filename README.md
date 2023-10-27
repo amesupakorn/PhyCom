@@ -1,4 +1,6 @@
-# ข้อโครงงาน    Tetris Battle Game
+# ข้อโครงงาน    Tetris Battle Game 
+## File main.c for Window
+## File main_for_mac.c for Mac
 ### รายชื่อสมาชิก
   1. นายภูวิศ  ตั้งถาวรสิริกุล 65070184
   2. นางสาวมนัญชยา  ดอกบัว 65070188
