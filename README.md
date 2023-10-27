@@ -1,6 +1,7 @@
 # ข้อโครงงาน    Tetris Battle Game 
 ## File main.c for Window | gcc main.c -lncurses -o tetris
 ## File main_for_mac.c for Mac | gcc main_for_mac.c -lncurses -o tetris
+## DEMO GAME https://youtu.be/9a-KJpaHsu0
 ### รายชื่อสมาชิก
   1. นายภูวิศ  ตั้งถาวรสิริกุล 65070184
   2. นางสาวมนัญชยา  ดอกบัว 65070188
