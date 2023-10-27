@@ -2,20 +2,37 @@
 #include <stdlib.h>
 #include <time.h>
 #include <sys/time.h>
-#include <ncurses.h>
+#include <sys/types.h>
+#include <ncurses/ncurses.h>
+#include <string.h>
 
-#define ROWS 20 // you can change height and width of table with ROWS and COLS 
+#define ROWS 20 // ตาราง
 #define COLS 15
 #define TRUE 1
 #define FALSE 0
 
 char Table[ROWS][COLS] = {0};
 int score = 0;
-char GameOn = TRUE;
-suseconds_t timer = 400000; // decrease this to make it faster
-int decrease = 1000;
-int selectShape = 0;
+char GameOn = FALSE;
+useconds_t timer = 400000; // decrease this to make it faster
+int decrease = 2190;
+int selectShape = -1;
+int cooldown = 10;
+struct timeval before, now;
+struct timeval timep2useskill;
+char word[6]; // show cooldown
 
+char player2interface[7][100] = {
+    "       Long Bar key is 0",
+    "       L shape key is 1",
+    "       reverse L shape key is 2",
+    "       square key is 3",
+    "       S shape key is 4",
+    "       Z shape key is 5",
+    "       T shape key is 6"
+};
+
+// สร้างบล็อค
 typedef struct {
     char **array;
     int width, row, col;
@@ -30,8 +47,14 @@ const Shape ShapesArray[7]= {
 	{(char *[]){(char []){1,0,0},(char []){1,1,1}, (char []){0,0,0}}, 3},                           //flipped L shape    
 	{(char *[]){(char []){1,1},(char []){1,1}}, 2},                                                 //square shape
 	{(char *[]){(char []){0,0,0,0}, (char []){1,1,1,1}, (char []){0,0,0,0}, (char []){0,0,0,0}}, 4} //long bar shape
-	// you can add any shape like it's done above. Don't be naughty.
+	// ถ้าจะเพิ่มไปเปลี่ยนเลขอาเรย์ด้วย
 };
+
+bool CheckCoolDown(){
+	gettimeofday(&now, NULL);
+    long int diff = (now.tv_sec - timep2useskill.tv_sec);
+	return cooldown <= (diff);
+}
 
 Shape CopyShape(Shape shape){
 	Shape new_shape = shape;
@@ -72,7 +95,7 @@ int CheckPosition(Shape shape){ //Check the position of the copied shape
 	return TRUE;
 }
 
-void RotateShape(Shape shape){ //rotates clockwise
+void RotateShape(Shape shape){ //ตามเข็ม
 	Shape temp = CopyShape(shape);
 	int i, j, k, width;
 	width = shape.width;
@@ -84,7 +107,7 @@ void RotateShape(Shape shape){ //rotates clockwise
 	DeleteShape(temp);
 }
 
-void RotateShape2(Shape shape){
+void RotateReverse(Shape shape){ // ทวนเข็ม
     Shape temp = CopyShape(shape);
     int i, j, k, width;
     width = shape.width;
@@ -97,7 +120,13 @@ void RotateShape2(Shape shape){
 }
 
 void SetNewRandomShape(){ //updates [current] with new shape
-	Shape new_shape = CopyShape(ShapesArray[selectShape]);
+	Shape new_shape;
+	if(selectShape > -1){
+		new_shape = CopyShape(ShapesArray[selectShape]);
+		selectShape = -1;
+	}else{
+		new_shape = CopyShape(ShapesArray[rand()%7]);
+	}
 
     //สุ่มอีกทีตอนเกิด
     int selSpawn = rand()%4;
@@ -105,7 +134,7 @@ void SetNewRandomShape(){ //updates [current] with new shape
         RotateShape(new_shape);
     }
     else if(selSpawn == 1){
-        RotateShape2(new_shape);
+        RotateReverse(new_shape);
     }
     else if(selSpawn == 2){
         RotateShape(new_shape);
@@ -149,7 +178,7 @@ void RemoveFullRowsAndUpdateScore(){
 			timer-=decrease--;
 		}
 	}
-	score += 100*count;
+	score += 219*count;
 }
 
 void PrintTable(){
@@ -165,13 +194,36 @@ void PrintTable(){
 	for(i=0; i<COLS-9; i++)
 		printw(" ");
 	printw("Covid Tetris\n");
+	init_pair(1, COLOR_BLACK, COLOR_WHITE);
+	init_pair(2, COLOR_WHITE, COLOR_RED);
+	init_pair(3, COLOR_WHITE, COLOR_GREEN);
+
+	
 	for(i = 0; i < ROWS ;i++){
 		for(j = 0; j < COLS ; j++){
-			printw("%c ", (Table[i][j] + Buffer[i][j])? '#': '.');
+			attron(COLOR_PAIR(1));
+			printw("%c ", (Table[i][j] + Buffer[i][j])? 219: '.');
+			attroff(COLOR_PAIR(1));
 		}
+        if(i>=2 && i<=8){
+            printw("%s", player2interface[i-2]);
+        }
 		printw("\n");
 	}
+	
 	printw("\nScore: %d\n", score);
+	printw("\nCooldown: ");
+	if(CheckCoolDown()){
+		attron(COLOR_PAIR(3));
+		printw(" Ready \n");
+		attroff(COLOR_PAIR(3));
+	}else{
+		attron(COLOR_PAIR(2));
+		printw(" Wait \n");
+		attroff(COLOR_PAIR(2));
+	}
+	
+	
 }
 
 void ManipulateCurrent(int action){
@@ -198,14 +250,14 @@ void ManipulateCurrent(int action){
 				current.col--;
 			break;
 		case 'w':
-			RotateShape(temp); // rotate clockwise
+			RotateShape(temp); // ตามเข็ม
 			if(CheckPosition(temp))
 				RotateShape(current);
 			break;
         case 'e':
-            RotateShape2(temp);
+            RotateReverse(temp); // ทวนเข็ม
             if(CheckPosition(temp))
-				RotateShape2(current);
+				RotateReverse(current);
 			break;
         case ' ': // Spacebar
             while (CheckPosition(temp)) {
@@ -217,49 +269,91 @@ void ManipulateCurrent(int action){
             RemoveFullRowsAndUpdateScore();
             SetNewRandomShape();
             break;
-        case 'i':
-            selectShape = 0;
-            break;
-        case 'o':
-            selectShape = 1;
-            break;
-        case 'p':
-            selectShape = 2;
-            break;
-        case '[':
-            selectShape = 3;
-            break;
-        case ']':
-            selectShape = 4;
-            break;
-        case 'k':
-            selectShape = 5;
-            break;
-        case 'l':
-            selectShape = 6;
-            break;
-        case ';':
-            selectShape = 7;
-            break;
+		case 'y':
+			GameOn = TRUE;
+			break;
+		case 27 :
+			GameOn = FALSE;
+			break;
 	}
+	if(CheckCoolDown()){
+		switch(action){
+			case '4':
+				selectShape = 0;
+				gettimeofday(&timep2useskill, NULL);
+				break;
+			case '5':
+				selectShape = 1;
+				gettimeofday(&timep2useskill, NULL);
+				break;
+			case '6':
+				selectShape = 2;
+				gettimeofday(&timep2useskill, NULL);
+				break;
+			case '1':
+				selectShape = 3;
+				gettimeofday(&timep2useskill, NULL);
+				break;
+			case '2':
+				selectShape = 4;
+				gettimeofday(&timep2useskill, NULL);
+				break;
+			case '3':
+				selectShape = 5;
+				gettimeofday(&timep2useskill, NULL);
+				break;
+			case '0':
+				selectShape = 6;
+				gettimeofday(&timep2useskill, NULL);
+				break;
+		}
+	}
+	
 	DeleteShape(temp);
 	PrintTable();
 }
 
-struct timeval before_now, now;
+//use before and now
 int hasToUpdate(){
-	return ((suseconds_t)(now.tv_sec*1000000 + now.tv_usec) -((suseconds_t)before_now.tv_sec*1000000 + before_now.tv_usec)) > timer;
+	return ((useconds_t)(now.tv_sec*2190000 + now.tv_usec) -((useconds_t)(before.tv_sec*2190000 + before.tv_usec))) > timer;
+}
+
+void Home(){
+	int c;
+	printw("================================================\n");
+	printw("		TetrisGame		\n");
+	printw("================================================\n\n\n");
+	printw("Start Game[Enter : Y]\n");
+
+	while (TRUE)
+	{
+		if ((c = getch()) != ERR) {
+		  ManipulateCurrent(c);
+		}
+		if(GameOn == TRUE){
+			break;
+		}
+	}
+	
 }
 
 int main() {
     srand(time(0));
     score = 0;
     int c;
-    initscr();
-	gettimeofday(&before_now, NULL);
+    initscr();// ncurses start
+	start_color();//สี
+
+	Home();
+
+	if(GameOn == 0){
+		return 0;
+	}
+	gettimeofday(&before, NULL);
 	timeout(1);
 	SetNewRandomShape();
     PrintTable();
+	gettimeofday(&timep2useskill, NULL);
 	while(GameOn){
 		if ((c = getch()) != ERR) {
 		  ManipulateCurrent(c);
@@ -267,7 +361,7 @@ int main() {
 		gettimeofday(&now, NULL);
 		if (hasToUpdate()) { //time difference in microsec accuracy
 			ManipulateCurrent('s');
-			gettimeofday(&before_now, NULL);
+			gettimeofday(&before, NULL);
 		}
 	}
 	DeleteShape(current);
@@ -275,7 +369,7 @@ int main() {
 	int i, j;
 	for(i = 0; i < ROWS ;i++){
 		for(j = 0; j < COLS ; j++){
-			printf("%c ", Table[i][j] ? '#': '.');
+			printf("%c ", Table[i][j] ? 219: '.');
 		}
 		printf("\n");
 	}
