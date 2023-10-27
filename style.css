@@ -311,18 +311,19 @@ a {
   text-align: center;
   line-height: 200%;
   font-size: 18px;
-  top: 5%;
+  margin-top: 2%;
 }
 .textabout4{
   position: relative;
   text-align: center;
   line-height: 500%;
   font-size: 18px;
-  top: 8%;
+  margin-top: 5%;
 }
 
 #tab-svelte{
-  height: 2000px;
+
+  height: 100%;
 }
 
 h3{
@@ -331,12 +332,13 @@ h3{
 
 .obj{
   position: relative;
-  top: 3.5%;
+  margin-top: 3%;
 }
 
 .descrip{
   position: relative;
-  left: 20%;
+  left: 15%;
+  top: 60%;
   text-align: left;
   font-size: 18px;
   line-height: 170%;
@@ -344,6 +346,7 @@ h3{
 
 .descrip2{
   position: relative;
+  top: 60%;
   left: 7%;
   text-align: left;
   font-size: 18px;
@@ -352,13 +355,45 @@ h3{
 
 .onep{
   position: relative;
-  top: 10%;
-  left: -26%;
+ margin-top: 3%;
+  left: -23%;
+    width: 600px;
+    height: 700px;
+    background: rgba(215, 215, 215, 0.457);
+    text-align: center;
+    border-radius: 10%;
+    transition: 1s;
+    color: #000000;
+}
 
+.onep h3{
+  position: relative;
+  top: 6%;
+}
+
+.onep img{
+  position: absolute;
+  top: 17%;
+  left: -2%;
 }
 
 .twop{
+  position: absolute;
+  margin-top: 55.3%;
+  left: 53%;
+  width: 600px;
+    height: 700px;
+    background: rgba(215, 215, 215, 0.457);
+    text-align: center;
+    border-radius: 10%;
+    transition: 1s;
+}
+.twop h3{
   position: relative;
-  top: -14.6%;
-  left: 24%;
+  top: 6%;
+}
+.twop img{
+  position: absolute;
+  top: 17%;
+  left: -2%;
 }
