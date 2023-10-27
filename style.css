@@ -322,8 +322,8 @@ a {
 }
 
 #tab-svelte{
-
-  height: 100%;
+  margin-top: -30%;
+  height: 3000px;
 }
 
 h3{
@@ -332,7 +332,7 @@ h3{
 
 .obj{
   position: relative;
-  margin-top: 3%;
+  margin-top: 8%;
 }
 
 .descrip{
@@ -379,7 +379,7 @@ h3{
 
 .twop{
   position: absolute;
-  margin-top: 55.3%;
+  margin-top: 60%;
   left: 53%;
   width: 600px;
     height: 700px;
@@ -396,4 +396,9 @@ h3{
   position: absolute;
   top: 17%;
   left: -2%;
+}
+
+.demo{
+  position: absolute;
+  top: 80%;
 }
