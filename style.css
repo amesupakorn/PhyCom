@@ -322,8 +322,8 @@ a {
 }
 
 #tab-svelte{
-  margin-top: -20%;
-  height: 4500px;
+  margin-top:20%;
+  height: 6000px;
 }
 
 h3{
@@ -358,7 +358,7 @@ h3{
  margin-top: 3%;
   left: -23%;
     width: 600px;
-    height: 700px;
+    height:30%;
     background: rgba(215, 215, 215, 0.457);
     text-align: center;
     border-radius: 10%;
@@ -378,11 +378,11 @@ h3{
 }
 
 .twop{
-  position: absolute;
-  margin-top: -52%;
-  left: 53%;
+  position: relative;
+  margin-top: -54.8%;
+  left: 25%;
   width: 600px;
-    height: 700px;
+    height: 30%;
     background: rgba(215, 215, 215, 0.457);
     text-align: center;
     border-radius: 10%;
@@ -400,14 +400,15 @@ h3{
 
 .demo{
   position: absolute;
-  top: 53%;
+  top: 32%;
+  line-height: 800%;
 }
 
 .code{
-  margin-top: 65%;
-  margin-left: -2%;
-  width: 70%;
-  height: 15%;
+  margin-top: 80%;
+  margin-left: -1%;
+  width: 80%;
+  height: 30%;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -417,5 +418,22 @@ h3{
 }
 .source{
   position: relative;
-  top: 20%;
+  top: 18%;
+}
+
+.poster{
+  position: absolute;
+  margin-top: 120%;
+  font-size: 30px;
+}
+.code2{
+  margin-top: 20%;
+  margin-left: -2%;
+  width: 90%;
+  height: 80%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.code2 img{
+  width: 80%;
 }
