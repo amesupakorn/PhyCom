@@ -5,6 +5,8 @@
 #include <ncurses.h>
 #include <string.h>
 
+// for mac
+
 #define ROWS 20 // ตาราง
 #define COLS 15
 #define TRUE 1
