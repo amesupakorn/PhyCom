@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <sys/time.h>
 #include <sys/types.h>
 #include <ncurses.h>
@@ -193,10 +192,7 @@ void PrintTable(){
 	clear();
 	for(i=0; i<COLS-9; i++)
 		printw(" ");
-	printw("Covid Tetris\n");
-	init_pair(1, COLOR_BLACK, COLOR_WHITE);
-	init_pair(2, COLOR_WHITE, COLOR_RED);
-	init_pair(3, COLOR_WHITE, COLOR_GREEN);
+	printw("Tetris Game\n");
 
 	
 	for(i = 0; i < ROWS ;i++){
@@ -318,22 +314,29 @@ int hasToUpdate(){
 	return ((useconds_t)(now.tv_sec*2190000 + now.tv_usec) -((useconds_t)(before.tv_sec*2190000 + before.tv_usec))) > timer;
 }
 
-void Home(){
+bool Home(){
 	int c;
 	printw("================================================\n");
 	printw("		TetrisGame		\n");
 	printw("================================================\n\n\n");
-	printw("Start Game[Enter : Y]\n");
+	
+	attron(COLOR_PAIR(3));printw(" Start Game[Enter : Y] \n");attroff(COLOR_PAIR(3));
+	attron(COLOR_PAIR(2));printw(" Quit Game[Enter : ESC] \n");attroff(COLOR_PAIR(2));
 
 	while (TRUE)
 	{
-		if ((c = getch()) != ERR) {
+		c = getch();
+		if(c == 27){
+			return true;
+		}
+		else if (c != ERR) {
 		  ManipulateCurrent(c);
 		}
 		if(GameOn == TRUE){
-			break;
+			return false;
 		}
 	}
+	
 	
 }
 
@@ -343,10 +346,10 @@ int main() {
     int c;
     initscr();// ncurses start
 	start_color();//สี
-
-	Home();
-
-	if(GameOn == 0){
+	init_pair(1, COLOR_BLACK, COLOR_WHITE);//table
+	init_pair(2, COLOR_WHITE, COLOR_RED);//ERR or Quit or wait
+	init_pair(3, COLOR_WHITE, COLOR_GREEN);// complete
+	if(Home()){
 		return 0;
 	}
 	gettimeofday(&before, NULL);
